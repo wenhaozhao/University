@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.iti.base.BaseService;
+import org.iti.base.Cache;
+import org.iti.common.util.JsonUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +26,12 @@ public class BaseServiceImpl implements BaseService {
 		return jdbcTemplate;
 	}
 
+	@Override
+	public void cache(String key, String json) {
+		Cache.getClient().set(key, json);
+	}
+
+	public void cache(String key, Object obj) {
+		Cache.getClient().set(key, JsonUtil.toJson(obj));
+	}
 }

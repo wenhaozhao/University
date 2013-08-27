@@ -21,20 +21,21 @@ public class HelloWorldServiceImpl implements HelloWorldService {
 
 	@Override
 	public List<Map<String, Object>> helloWorld() {
-		List<Map<String, Object>> results = baseService.jdbcTemplate()
-				.query("Select _ID,_Content from Test order by _ID asc",
-						new RowMapper<Map<String, Object>>() {
+		List<Map<String, Object>> results = baseService.jdbcTemplate().query(
+				"Select _ID,_Content from Test order by _ID asc",
+				new RowMapper<Map<String, Object>>() {
 
-							@Override
-							public Map<String, Object> mapRow(ResultSet arg0,
-									int arg1) throws SQLException {
-								Map<String, Object> result = new HashMap<String, Object>();
-								result.put("_ID", arg0.getLong("_ID"));
-								result.put("_Content",
-										arg0.getString("_Content"));
-								return result;
-							}
-						});
+					@Override
+					public Map<String, Object> mapRow(ResultSet arg0, int arg1)
+							throws SQLException {
+						Map<String, Object> result = new HashMap<String, Object>();
+						result.put("_ID", arg0.getLong("_ID"));
+						result.put("_Content", arg0.getString("_Content"));
+						baseService.cache(Long.valueOf(arg0.getLong("_ID"))
+								.toString(), arg0.getString("_Content"));
+						return result;
+					}
+				});
 		return results;
 	}
 }
