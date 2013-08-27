@@ -9,4 +9,5 @@
 	<context:annotation-config />
 	<context:component-scan base-package="org.iti.base,org.iti.service" />
 	<import resource="data-source.xml"/>
+	<import resource="couchbase.xml"/>
 </beans>
